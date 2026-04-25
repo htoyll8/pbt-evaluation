@@ -1,0 +1,325 @@
+{"task_id": "HumanEval/0", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/0", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/0", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/0", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/0", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/1", "seed_index": 1, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/1", "seed_index": 1, "attempt": 1, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/1", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/1", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/1", "seed_index": 4, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/1", "seed_index": 4, "attempt": 1, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/1", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/10", "seed_index": 1, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "catta\ncataata\n\nFAIL: 'bool' object is not subscriptable"}
+{"task_id": "HumanEval/10", "seed_index": 1, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: 'bool' object is not subscriptable"}
+{"task_id": "HumanEval/10", "seed_index": 1, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: 'bool' object is not subscriptable"}
+{"task_id": "HumanEval/10", "seed_index": 1, "attempt": 3, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: 'bool' object is not subscriptable"}
+{"task_id": "HumanEval/10", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "Traceback (most recent call last):\n  File \"/tmp/tmpekhenb8t.py\", line 48, in <module>\n    print(make_palindrome(''))\n          ^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpekhenb8t.py\", line 41, in make_palindrome\n    if is_palindrome(string):\n       ^^^^^^^^^^^^^\nNameError: name 'is_palindrome' is not defined. Did you mean: 'make_palindrome'?"}
+{"task_id": "HumanEval/10", "seed_index": 3, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "catta\ncataata\nFAIL: 'bool' object is not subscriptable"}
+{"task_id": "HumanEval/10", "seed_index": 3, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: 'bool' object is not subscriptable"}
+{"task_id": "HumanEval/10", "seed_index": 3, "attempt": 2, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: 'bool' object is not subscriptable"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 3, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 4, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 5, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 6, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 7, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 8, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 9, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 4, "attempt": 10, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'is_palindrome' is not defined"}
+{"task_id": "HumanEval/10", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/11", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/11", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/11", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/11", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/11", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: string index out of range"}
+{"task_id": "HumanEval/12", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/12", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/12", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/12", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/12", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/13", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/13", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/13", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/13", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/13", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/14", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/14", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/14", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/14", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/14", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/15", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/15", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/15", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/15", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/15", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/16", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/16", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "3\n4\nFAIL:"}
+{"task_id": "HumanEval/16", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/16", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/16", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "3\n4\nFAIL:"}
+{"task_id": "HumanEval/17", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/17", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/17", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/17", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/17", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/18", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/18", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/18", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "0\n3\n3\nPASS"}
+{"task_id": "HumanEval/18", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/18", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/19", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/19", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/19", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/19", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/19", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/2", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/2", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/2", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/2", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/2", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/20", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/20", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/20", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/20", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/20", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/21", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/21", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/21", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/21", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/21", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/22", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/22", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/22", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/22", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/22", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/23", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Using example() inside a test function is a bad idea. Instead consider using hypothesis.strategies.data() to draw more examples during testing. See https://hypothesis.readthedocs.io/en/latest/reference/strategies.html#hypothesis.strategies.data for more details."}
+{"task_id": "HumanEval/23", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Using example() inside a test function is a bad idea. Instead consider using hypothesis.strategies.data() to draw more examples during testing. See https://hypothesis.readthedocs.io/en/latest/reference/strategies.html#hypothesis.strategies.data for more details."}
+{"task_id": "HumanEval/23", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Using example() inside a test function is a bad idea. Instead consider using hypothesis.strategies.data() to draw more examples during testing. See https://hypothesis.readthedocs.io/en/latest/reference/strategies.html#hypothesis.strategies.data for more details."}
+{"task_id": "HumanEval/23", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Using example() inside a test function is a bad idea. Instead consider using hypothesis.strategies.data() to draw more examples during testing. See https://hypothesis.readthedocs.io/en/latest/reference/strategies.html#hypothesis.strategies.data for more details."}
+{"task_id": "HumanEval/23", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Using example() inside a test function is a bad idea. Instead consider using hypothesis.strategies.data() to draw more examples during testing. See https://hypothesis.readthedocs.io/en/latest/reference/strategies.html#hypothesis.strategies.data for more details."}
+{"task_id": "HumanEval/24", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/24", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/24", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/24", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/24", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/25", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/25", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/25", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/25", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/25", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/26", "seed_index": 1, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 1, "attempt": 1, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/26", "seed_index": 2, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 2, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 2, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "File \"/tmp/tmpxasbdca2.py\", line 55\n    def removefrom typing import List\n                   ^^^^^^\nSyntaxError: expected '('"}
+{"task_id": "HumanEval/26", "seed_index": 2, "attempt": 3, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 2, "attempt": 4, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/26", "seed_index": 3, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 3, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 3, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 3, "attempt": 3, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 3, "attempt": 4, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 3, "attempt": 5, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/26", "seed_index": 4, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 4, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 4, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 4, "attempt": 3, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 4, "attempt": 4, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/26", "seed_index": 5, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 5, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 5, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 5, "attempt": 3, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/26", "seed_index": 5, "attempt": 4, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/27", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/27", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/27", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/27", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/27", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/28", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/28", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/28", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/28", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/28", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/29", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/29", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/29", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/29", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/29", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/3", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/3", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/3", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/3", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/3", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/30", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/30", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/30", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/30", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/30", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/31", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/31", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/31", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/31", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/31", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/32", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: name 'poly' is not defined"}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'np' is not defined"}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'poly' is not defined"}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'poly' is not defined"}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 3, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'poly' is not defined"}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 4, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: The list of coefficients must have an odd number of elements."}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 5, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: Tolerance of 0.0001 reached. Failed to converge after 1 iterations, value is 0.0001."}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 6, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 7, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 8, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 2, "attempt": 9, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'poly' is not defined"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 3, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 4, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 5, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 6, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 7, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 8, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 9, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 3, "attempt": 10, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 4, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "-0.5\n3.0\nFAIL: name 'poly' is not defined"}
+{"task_id": "HumanEval/32", "seed_index": 4, "attempt": 1, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "-0.5\n3.0\nFAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 5, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "Traceback (most recent call last):\n  File \"/tmp/tmpjxfrk1ww.py\", line 62, in <module>\n    print(round(find_zero([1, 2]), 2)) # f(x) = 1 + 2x\n                ^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpjxfrk1ww.py\", line 57, in find_zero\n    x = fsolve(func, x0)\n        ^^^^^^^^^^^^^^^^\n  File \"/home/ritaholloway/.local/lib/python3.11/site-packages/scipy/optimize/_minpack_py.py\", line 171, in fsolve\n    res = _root_hybr(_wrapped_func, x0, args, jac=fprime, **options)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"}
+{"task_id": "HumanEval/32", "seed_index": 5, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 5, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/32", "seed_index": 5, "attempt": 3, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: poly() missing 1 required positional argument: 'x'"}
+{"task_id": "HumanEval/33", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/33", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/33", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/33", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/33", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/34", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/34", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/34", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/34", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/34", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/35", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/35", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/35", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/35", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/35", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/36", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Test took 293.28ms, which exceeds the deadline of 200.00ms. If you expect test cases to take this long, you can use @settings(deadline=...) to either set a higher deadline, or to disable it with deadline=None."}
+{"task_id": "HumanEval/36", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Test took 353.89ms, which exceeds the deadline of 200.00ms. If you expect test cases to take this long, you can use @settings(deadline=...) to either set a higher deadline, or to disable it with deadline=None."}
+{"task_id": "HumanEval/36", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Test took 353.48ms, which exceeds the deadline of 200.00ms. If you expect test cases to take this long, you can use @settings(deadline=...) to either set a higher deadline, or to disable it with deadline=None."}
+{"task_id": "HumanEval/36", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Test took 340.61ms, which exceeds the deadline of 200.00ms. If you expect test cases to take this long, you can use @settings(deadline=...) to either set a higher deadline, or to disable it with deadline=None."}
+{"task_id": "HumanEval/36", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Test took 340.74ms, which exceeds the deadline of 200.00ms. If you expect test cases to take this long, you can use @settings(deadline=...) to either set a higher deadline, or to disable it with deadline=None."}
+{"task_id": "HumanEval/37", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/37", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/37", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/37", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/37", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/38", "seed_index": 1, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: name 'solution' is not defined"}
+{"task_id": "HumanEval/38", "seed_index": 1, "attempt": 1, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: name 'encode_cyclic' is not defined"}
+{"task_id": "HumanEval/38", "seed_index": 2, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "File \"/tmp/tmpjbgy8r0k.py\", line 30\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 42)"}
+{"task_id": "HumanEval/38", "seed_index": 2, "attempt": 1, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: name 'encode_cyclic' is not defined"}
+{"task_id": "HumanEval/38", "seed_index": 3, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "File \"/tmp/tmpugyr260n.py\", line 30\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 42)"}
+{"task_id": "HumanEval/38", "seed_index": 3, "attempt": 1, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: name 'encode_cyclic' is not defined"}
+{"task_id": "HumanEval/38", "seed_index": 4, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "File \"/tmp/tmp6z8jvx7w.py\", line 34\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\nIndentationError: unexpected indent"}
+{"task_id": "HumanEval/38", "seed_index": 4, "attempt": 1, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: name 'encode_cyclic' is not defined"}
+{"task_id": "HumanEval/38", "seed_index": 5, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "File \"/tmp/tmpeldjzj00.py\", line 30\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 42)"}
+{"task_id": "HumanEval/38", "seed_index": 5, "attempt": 1, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: name 'encode_cyclic' is not defined"}
+{"task_id": "HumanEval/39", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/39", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/39", "seed_index": 3, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: list index out of range"}
+{"task_id": "HumanEval/39", "seed_index": 3, "attempt": 1, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/39", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/39", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/4", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/4", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/4", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/4", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/4", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 2 distinct failures. (2 sub-exceptions)"}
+{"task_id": "HumanEval/40", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/40", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/40", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/40", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/40", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/41", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/41", "seed_index": 2, "attempt": 0, "passes_unit": false, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/41", "seed_index": 2, "attempt": 1, "passes_unit": false, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/41", "seed_index": 2, "attempt": 2, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/41", "seed_index": 3, "attempt": 0, "passes_unit": false, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/41", "seed_index": 3, "attempt": 1, "passes_unit": false, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/41", "seed_index": 3, "attempt": 2, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/41", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/41", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/42", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/42", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/42", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/42", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/42", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/43", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/43", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/43", "seed_index": 3, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/43", "seed_index": 3, "attempt": 1, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/43", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/43", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/44", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/44", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/44", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/44", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/44", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/45", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/45", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/45", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/45", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/45", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/46", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/46", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/46", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/46", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/46", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL: Hypothesis found 3 distinct failures. (3 sub-exceptions)"}
+{"task_id": "HumanEval/47", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/47", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/47", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/47", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/47", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/48", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/48", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/48", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/48", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/48", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/49", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/49", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/49", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "3\n2\n1\n8\n1\nPASS"}
+{"task_id": "HumanEval/49", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/49", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/5", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/5", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/5", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/5", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/5", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/6", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/6", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/6", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/6", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/6", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": false, "overfit_pbt": true, "pbt_output": "FAIL:"}
+{"task_id": "HumanEval/7", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/7", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/7", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/7", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/7", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/8", "seed_index": 1, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/8", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/8", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/8", "seed_index": 4, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/8", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/9", "seed_index": 1, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: Input generation is slow: Hypothesis only generated 1 valid inputs after 1.30 seconds.\n\n            count | fraction |    slowest draws (seconds)\n  numbers |    1  |    100%  |      --      --      --      --   1.299\n\nThis could be for a few reasons:\n1. This strategy could be generating too much data per input. Try decreasing the amount of data generated, for example by decreasing the minimum size of collection strategies like st.lists().\n2. Some other expensive computation could be runnin"}
+{"task_id": "HumanEval/9", "seed_index": 1, "attempt": 1, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: list index out of range"}
+{"task_id": "HumanEval/9", "seed_index": 1, "attempt": 2, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: list index out of range"}
+{"task_id": "HumanEval/9", "seed_index": 1, "attempt": 3, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "File \"/tmp/tmpgsyxo0f7.py\", line 41\n    max_so_far = numbers[0\n                        ^\nSyntaxError: '[' was never closed"}
+{"task_id": "HumanEval/9", "seed_index": 1, "attempt": 4, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: list index out of range"}
+{"task_id": "HumanEval/9", "seed_index": 1, "attempt": 5, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/9", "seed_index": 2, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/9", "seed_index": 3, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/9", "seed_index": 4, "attempt": 0, "passes_unit": false, "passes_pbt": false, "overfit_pbt": false, "pbt_output": "FAIL: list index out of range"}
+{"task_id": "HumanEval/9", "seed_index": 4, "attempt": 1, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}
+{"task_id": "HumanEval/9", "seed_index": 5, "attempt": 0, "passes_unit": true, "passes_pbt": true, "overfit_pbt": false, "pbt_output": "PASS"}

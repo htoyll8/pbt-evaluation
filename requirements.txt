@@ -1,0 +1,4 @@
+openai==2.4.0
+anthropic
+datasets==4.2.0
+hypothesis
