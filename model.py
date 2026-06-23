@@ -15,7 +15,10 @@ OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 # always supply an exact slug.
 OPENROUTER_MODEL_IDS = {
     "claude-sonnet-4-5": "anthropic/claude-sonnet-4.5",
+    "claude-sonnet-4-6": "anthropic/claude-sonnet-4.6",
     "gpt-5.1": "openai/gpt-5.1",
+    "gpt-5.5": "openai/gpt-5.5",
+    "gpt-5.3-codex": "openai/gpt-5.3-codex",  # latest codex; no 5.5-codex exists
     "gpt-4": "openai/gpt-4",
     "gpt-4o-mini": "openai/gpt-4o-mini",
 }
