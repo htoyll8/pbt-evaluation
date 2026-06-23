@@ -439,11 +439,7 @@ def generate_pbt_two_step(model: Model, task: dict, retries: int = 2, no_ref: bo
             prompt=task["prompt"], code=task["code"], unit_tests=task["unit_tests"])
 
     try:
-        if model._is_claude():
-            prop_text, usage1 = model._claude_generate(prop_prompt, max_tokens=1024)
-        else:
-            prop_text, usage1 = model._openai_generate({
-                "model": model.model_name, "input": prop_prompt})
+        prop_text, usage1 = model.complete(prop_prompt, max_tokens=1024)
     except Exception as e:
         return {
             "task_id": task["task_id"], "dataset": task.get("dataset", "unknown"),
@@ -460,11 +456,7 @@ def generate_pbt_two_step(model: Model, task: dict, retries: int = 2, no_ref: bo
 
     for attempt in range(retries + 1):
         try:
-            if model._is_claude():
-                text, usage2 = model._claude_generate(pbt_prompt, max_tokens=1024)
-            else:
-                text, usage2 = model._openai_generate({
-                    "model": model.model_name, "input": pbt_prompt})
+            text, usage2 = model.complete(pbt_prompt, max_tokens=1024)
             pbt_code = extract_code(text)
             total_usage = {
                 "input_tokens": usage1["input_tokens"] + usage2["input_tokens"],
@@ -506,13 +498,7 @@ def generate_pbt(model: Model, task: dict, retries: int = 2, no_ref: bool = Fals
 
     for attempt in range(retries + 1):
         try:
-            if model._is_claude():
-                text, usage = model._claude_generate(full_prompt, max_tokens=1024)
-            else:
-                text, usage = model._openai_generate({
-                    "model": model.model_name,
-                    "input": full_prompt,
-                })
+            text, usage = model.complete(full_prompt, max_tokens=1024)
             pbt_code = extract_code(text)
             return {
                 "task_id": task["task_id"],

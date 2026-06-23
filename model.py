@@ -1,13 +1,28 @@
 import os
 import re
-import textwrap
 import anthropic
 from openai import OpenAI
 
-# Set ANTHROPIC_VERTEX_PROJECT to use Vertex AI instead of direct Anthropic API.
-# e.g. export ANTHROPIC_VERTEX_PROJECT=your-gcp-project
-_VERTEX_PROJECT = os.environ.get("ANTHROPIC_VERTEX_PROJECT")
-_VERTEX_REGION  = os.environ.get("ANTHROPIC_VERTEX_REGION", "us-east5")
+# Provider selection
+# -------------------
+# By default the wrapper talks to each vendor directly: Anthropic SDK for
+# Claude, the OpenAI Responses API for everything else (Vertex for Claude when
+# ANTHROPIC_VERTEX_PROJECT is set).
+#
+# Set OPENROUTER_API_KEY to route *every* model through OpenRouter instead — one
+# OpenAI-compatible endpoint with instant cost reporting. Force the choice with
+# PBT_PROVIDER=openrouter|direct (default: auto-detect from the key).
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+
+# OpenRouter namespaces model IDs by vendor. Map the bare names this project
+# uses to their OpenRouter slugs; any name already containing "/" is passed
+# through unchanged, so callers can always supply an exact slug.
+OPENROUTER_MODEL_IDS = {
+    "claude-sonnet-4-5": "anthropic/claude-sonnet-4.5",
+    "gpt-5.1": "openai/gpt-5.1",
+    "gpt-4": "openai/gpt-4",
+    "gpt-4o-mini": "openai/gpt-4o-mini",
+}
 
 
 def _zero_usage():
@@ -21,60 +36,69 @@ def _add_usage(a, b):
     }
 
 
+def _resolve_provider(model_name: str) -> str:
+    """Return the provider to use: 'openrouter', 'vertex', 'anthropic', or 'openai'."""
+    choice = os.environ.get("PBT_PROVIDER", "auto").lower()
+    if choice == "openrouter" or (choice == "auto" and os.environ.get("OPENROUTER_API_KEY")):
+        return "openrouter"
+    if model_name.lower().startswith("claude"):
+        return "vertex" if os.environ.get("ANTHROPIC_VERTEX_PROJECT") else "anthropic"
+    return "openai"
+
+
+def _openrouter_model_id(model_name: str) -> str:
+    """Map a bare model name to its OpenRouter slug (pass-through if already namespaced)."""
+    if "/" in model_name:
+        return model_name
+    if model_name in OPENROUTER_MODEL_IDS:
+        return OPENROUTER_MODEL_IDS[model_name]
+    if model_name.lower().startswith("claude"):
+        return f"anthropic/{model_name}"
+    if re.match(r"^(gpt|o[1-9])", model_name.lower()):
+        return f"openai/{model_name}"
+    return model_name
+
+
 class Model:
-    def __init__(self,
-                 model_name="gpt-4o-mini",
-                 temperature=0):
+    def __init__(self, model_name="gpt-4o-mini", temperature=0):
         self.model_name = model_name
         self.temperature = temperature
+        self.provider = _resolve_provider(model_name)
 
-        if self._is_claude():
-            vertex_project = os.environ.get("ANTHROPIC_VERTEX_PROJECT")
-            vertex_region = os.environ.get("ANTHROPIC_VERTEX_REGION", "us-east5")
-            if vertex_project:
-                from anthropic import AnthropicVertex
-                self.client = AnthropicVertex(
-                    project_id=vertex_project,
-                    region=vertex_region,
-                )
-                print(f"[INFO] Using Vertex AI for Claude (project={vertex_project}, region={vertex_region})")
-            else:
-                self.client = anthropic.Anthropic()
-                print("[INFO] Using direct Anthropic API for Claude")
+        if self.provider == "openrouter":
+            self.client = OpenAI(
+                base_url=OPENROUTER_BASE_URL,
+                api_key=os.environ["OPENROUTER_API_KEY"],
+            )
+            print(f"[INFO] Using OpenRouter for {model_name} -> {_openrouter_model_id(model_name)}")
+        elif self.provider == "vertex":
+            from anthropic import AnthropicVertex
+            self.client = AnthropicVertex(
+                project_id=os.environ["ANTHROPIC_VERTEX_PROJECT"],
+                region=os.environ.get("ANTHROPIC_VERTEX_REGION", "us-east5"),
+            )
+            print(f"[INFO] Using Vertex AI for Claude (project={os.environ['ANTHROPIC_VERTEX_PROJECT']})")
+        elif self.provider == "anthropic":
+            self.client = anthropic.Anthropic()
+            print("[INFO] Using direct Anthropic API for Claude")
         else:
             self.client = OpenAI()
-            print(hasattr(self.client, "responses"))
+            print("[INFO] Using direct OpenAI Responses API")
 
     def _is_claude(self):
         return self.model_name.lower().startswith("claude")
 
-    def _sanitize_java_output(self, code: str) -> str:
-        # Remove triple backticks and language tags
-        code = re.sub(r"```(?:java)?", "", code, flags=re.IGNORECASE).strip()
-
-        # Remove a lone leading "java" token
-        code = re.sub(r"^\s*java\s*\n", "", code, flags=re.IGNORECASE)
-
-        # Drop anything before the first import or class declaration
-        match = re.search(r"(import\s+|class\s+)", code)
-        if match:
-            code = code[match.start():]
-
-        return code.strip()
+    # -- provider-specific request paths ------------------------------------
 
     def _claude_generate(self, prompt, max_tokens=2048, temperature=None):
-        """Call Claude and return (text, usage_dict)."""
+        """Anthropic Messages API -> (text, usage)."""
         kwargs = {
             "model": self.model_name,
             "max_tokens": max_tokens,
-            "messages": [
-                {"role": "user", "content": prompt}
-            ]
+            "messages": [{"role": "user", "content": prompt}],
         }
-
         if temperature is not None:
             kwargs["temperature"] = temperature
-
         message = self.client.messages.create(**kwargs)
         usage = {
             "input_tokens":  message.usage.input_tokens,
@@ -82,8 +106,11 @@ class Model:
         }
         return message.content[0].text, usage
 
-    def _openai_generate(self, request):
-        """Call OpenAI Responses API and return (text, usage_dict)."""
+    def _responses_generate(self, prompt, max_tokens=2048, temperature=None):
+        """OpenAI Responses API -> (text, usage)."""
+        request = {"model": self.model_name, "input": prompt}
+        if temperature is not None and "gpt-5" not in self.model_name.lower():
+            request["temperature"] = temperature
         response = self.client.responses.create(**request)
         usage = {
             "input_tokens":  response.usage.input_tokens,
@@ -91,18 +118,51 @@ class Model:
         }
         return response.output_text, usage
 
-    def generate(
-            self,
-            task_description,
-            n=1,
-            temperature=None,
-            language="python"):
+    def _chat_generate(self, prompt, max_tokens=2048, temperature=None):
+        """OpenAI-compatible Chat Completions API (OpenRouter) -> (text, usage)."""
+        kwargs = {
+            "model": _openrouter_model_id(self.model_name),
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": max_tokens,
+        }
+        if temperature is not None and "gpt-5" not in self.model_name.lower():
+            kwargs["temperature"] = temperature
+        response = self.client.chat.completions.create(**kwargs)
+        usage = {
+            "input_tokens":  response.usage.prompt_tokens,
+            "output_tokens": response.usage.completion_tokens,
+        }
+        return response.choices[0].message.content, usage
+
+    def complete(self, prompt, max_tokens=2048, temperature=None):
+        """Single completion for the active provider -> (text, usage)."""
+        temperature = temperature if temperature is not None else self.temperature
+        if self.provider == "openrouter":
+            return self._chat_generate(prompt, max_tokens, temperature)
+        if self.provider in ("anthropic", "vertex"):
+            return self._claude_generate(prompt, max_tokens, temperature)
+        return self._responses_generate(prompt, max_tokens, temperature)
+
+    # -- output cleanup -----------------------------------------------------
+
+    def _sanitize_java_output(self, code: str) -> str:
+        # Remove triple backticks and language tags
+        code = re.sub(r"```(?:java)?", "", code, flags=re.IGNORECASE).strip()
+        # Remove a lone leading "java" token
+        code = re.sub(r"^\s*java\s*\n", "", code, flags=re.IGNORECASE)
+        # Drop anything before the first import or class declaration
+        match = re.search(r"(import\s+|class\s+)", code)
+        if match:
+            code = code[match.start():]
+        return code.strip()
+
+    # -- public generation helpers ------------------------------------------
+
+    def generate(self, task_description, n=1, temperature=None, language="python"):
         """
         Generate n initial programs (seeds) given a natural language description.
         Returns (responses, usage) where usage sums tokens across all n calls.
         """
-        temperature = temperature if temperature is not None else getattr(self, "temperature", None)
-
         responses = []
         total_usage = _zero_usage()
 
@@ -158,13 +218,7 @@ class Model:
                     "```\n\n"
                 )
 
-            if self._is_claude():
-                code, usage = self._claude_generate(prompt, temperature=temperature)
-            else:
-                request = {"model": self.model_name, "input": prompt}
-                if temperature is not None and "gpt-5" not in self.model_name.lower():
-                    request["temperature"] = temperature
-                code, usage = self._openai_generate(request)
+            code, usage = self.complete(prompt, temperature=temperature)
 
             if language == "java":
                 code = self._sanitize_java_output(code)
@@ -179,8 +233,6 @@ class Model:
         Ask the model to critique a failed attempt (program only or with history context).
         Returns (feedback_text, usage).
         """
-        temperature = temperature if temperature is not None else getattr(self, "temperature", None)
-
         has_history = "Summary of previous attempts:" in program_or_context
         section_label = (
             "Context (previous attempts and current program)"
@@ -196,36 +248,21 @@ class Model:
         )
 
         print(f"DEBUG [model.py]: Feedback prompt: {prompt}", flush=True)
-
-        if self._is_claude():
-            return self._claude_generate(prompt, temperature=temperature)
-
-        request = {
-            "model": self.model_name,
-            "input": [{"role": "user", "content": prompt}],
-        }
-        if temperature is not None and "gpt-5" not in self.model_name.lower():
-            request["temperature"] = temperature
-        return self._openai_generate(request)
+        return self.complete(prompt, temperature=temperature)
 
     def generate_antiunified_history(self, trajectory, temperature=None):
         """
         Ask the model to perform *anti-unification* over all previous program attempts.
         Returns (abstraction_text, usage).
         """
-        temperature = temperature if temperature is not None else getattr(self, "temperature", None)
-
         attempts = trajectory.get("refinement_attempts", [])
         if not attempts:
             return "", _zero_usage()
 
-        program_snippets = []
-        for r in attempts:
-            program_snippets.append(
-                f"### Attempt {r['attempt']} (pass rate: {r['pass_fraction']*100:.1f}%)\n"
-                f"{r['program']}\n"
-            )
-
+        program_snippets = [
+            f"### Attempt {r['attempt']} (pass rate: {r['pass_fraction']*100:.1f}%)\n{r['program']}\n"
+            for r in attempts
+        ]
         programs_text = "\n\n".join(program_snippets)
 
         prompt = (
@@ -240,26 +277,13 @@ class Model:
             f"{programs_text}\n\n"
             "Produce the anti-unified abstraction below:\n"
         )
+        return self.complete(prompt, temperature=temperature)
 
-        request = {
-            "model": self.model_name,
-            "input": [{"role": "user", "content": prompt}],
-        }
-        if temperature is not None and "gpt-5" not in self.model_name.lower():
-            request["temperature"] = temperature
-        return self._openai_generate(request)
-
-    def refine(self,
-               task_description,
-               program,
-               feedback=None,
-               temperature=None):
+    def refine(self, task_description, program, feedback=None, temperature=None):
         """
         Ask the model to revise its program, either directly or using critique feedback.
         Returns (revised_code, usage).
         """
-        temperature = temperature if temperature is not None else getattr(self, "temperature", None)
-
         if feedback:
             prompt = (
                 f"Task:\n{task_description}\n\n"
@@ -274,14 +298,4 @@ class Model:
                 f"Current Program:\n{program}\n\n"
                 f"Revise and improve the program to make it pass all tests."
             )
-
-        if self._is_claude():
-            return self._claude_generate(prompt, temperature=temperature)
-
-        request = {
-            "model": self.model_name,
-            "input": [{"role": "user", "content": prompt}],
-        }
-        if temperature is not None and "gpt-5" not in self.model_name.lower():
-            request["temperature"] = temperature
-        return self._openai_generate(request)
+        return self.complete(prompt, temperature=temperature)

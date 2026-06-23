@@ -9,9 +9,24 @@ Evaluation harness for cross-model property-based testing of LLM-generated code:
 
 ```bash
 pip install -r requirements.txt
+```
+
+Pick one of two ways to reach the models:
+
+```bash
+# Option A — OpenRouter (one key for every model, instant cost reporting)
+export OPENROUTER_API_KEY=...
+
+# Option B — direct vendor APIs
 export ANTHROPIC_API_KEY=...
 export OPENAI_API_KEY=...
 ```
+
+When `OPENROUTER_API_KEY` is set, every model routes through OpenRouter.
+Force the choice with `PBT_PROVIDER=openrouter|direct`. With direct APIs,
+set `ANTHROPIC_VERTEX_PROJECT` to send Claude through AWS/Vertex instead.
+Pass an exact OpenRouter slug (e.g. `anthropic/claude-sonnet-4.5`) as
+`--model` to override the built-in name mapping.
 
 ### 1. Generate PBTs
 
@@ -65,7 +80,7 @@ pbt-evaluation/
 │   ├── run_pbt_eval.py         # Evaluate solutions against PBTs
 │   ├── print_pbt_table.py      # Summary tables
 │   └── run_pbt_generation.sh   # Batch wrapper
-├── model.py                    # LLM API wrapper (Anthropic + OpenAI)
+├── model.py                    # LLM API wrapper (OpenRouter, Anthropic, OpenAI, Vertex)
 ├── pbt_data/                   # Generated PBTs, eval results, round-robin runs
 ├── results/                    # Seed programs (h0) for MBPP+ and HumanEval
 ├── pbt_plan.md                 # Design notes
