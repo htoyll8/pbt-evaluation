@@ -4,20 +4,15 @@ import anthropic
 from anthropic import AnthropicVertex
 from openai import OpenAI
 
-# Provider selection
-# -------------------
-# By default the wrapper talks to each vendor directly: Anthropic SDK for
-# Claude, the OpenAI Responses API for everything else (Vertex for Claude when
-# ANTHROPIC_VERTEX_PROJECT is set).
-#
-# Set OPENROUTER_API_KEY to route *every* model through OpenRouter instead — one
-# OpenAI-compatible endpoint with instant cost reporting. Force the choice with
-# PBT_PROVIDER=openrouter|direct (default: auto-detect from the key).
+# Provider selection. Each vendor is called directly by default: Anthropic SDK
+# for Claude (Vertex when ANTHROPIC_VERTEX_PROJECT is set), else the OpenAI
+# Responses API. Set OPENROUTER_API_KEY to route every model through OpenRouter
+# instead; PBT_PROVIDER=openrouter|direct overrides the key-based auto-detect.
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
-# OpenRouter namespaces model IDs by vendor. Map the bare names this project
-# uses to their OpenRouter slugs; any name already containing "/" is passed
-# through unchanged, so callers can always supply an exact slug.
+# OpenRouter namespaces model IDs by vendor. Map this project's bare names to
+# their slugs; a name already containing "/" passes through, so callers can
+# always supply an exact slug.
 OPENROUTER_MODEL_IDS = {
     "claude-sonnet-4-5": "anthropic/claude-sonnet-4.5",
     "gpt-5.1": "openai/gpt-5.1",
@@ -128,3 +123,27 @@ class Model:
         if self.provider in ("anthropic", "vertex"):
             return self._claude_generate(prompt, max_tokens, temperature)
         return self._responses_generate(prompt, max_tokens, temperature)
+
+    def generate(self, task_description, n=1, max_tokens=2048, temperature=None):
+        """Generate n candidate Python programs for a task -> (programs, summed usage)."""
+        # APPS tasks read stdin and write stdout; say so explicitly.
+        io_instruction = (
+            "Write a complete Python program that reads from stdin and writes to stdout.\n"
+            if any(kw in task_description for kw in ["-----Input-----", "-----Output-----", "Input\n", "Output\n", "stdin", "stdout"])
+            else ""
+        )
+        prompt = (
+            task_description
+            + io_instruction
+            + "Please provide Python code wrapped in triple backticks like:\n"
+            "```python\n# your code here\n```\n\n"
+        )
+
+        programs = []
+        usage = {"input_tokens": 0, "output_tokens": 0}
+        for _ in range(n):
+            code, call_usage = self.complete(prompt, max_tokens, temperature)
+            programs.append(code)
+            usage["input_tokens"] += call_usage["input_tokens"]
+            usage["output_tokens"] += call_usage["output_tokens"]
+        return programs, usage
