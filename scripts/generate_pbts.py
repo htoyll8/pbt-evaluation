@@ -30,6 +30,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from model import Model
+from tracking import track
 from datasets import load_dataset
 
 os.makedirs("pbt_data", exist_ok=True)
@@ -609,6 +610,28 @@ def main():
     valid = sum(1 for r in records if r.get("pbt_valid"))
     print(f"\nDone. {valid}/{len(records)} valid PBTs → {args.out}")
     print(f"Total tokens: {total_in} input / {total_out} output")
+
+    track(
+        experiment="pbt-generation",
+        run_name=f"{args.model}_{args.dataset}_{condition}",
+        params={
+            "dataset": args.dataset,
+            "model": args.model,
+            "max_tasks": args.max_tasks,
+            "condition": condition,
+            "no_ref": args.no_ref,
+            "two_step": args.two_step,
+            "no_hints": args.no_hints,
+        },
+        metrics={
+            "num_tasks": len(records),
+            "valid_pbts": valid,
+            "valid_rate": valid / max(len(records), 1),
+            "input_tokens": total_in,
+            "output_tokens": total_out,
+        },
+        artifact=args.out,
+    )
 
 
 if __name__ == "__main__":
