@@ -1,5 +1,10 @@
 import os
 
+try:
+    import mlflow
+except ImportError:
+    mlflow = None
+
 
 def track(experiment, run_name, params=None, metrics=None, artifact=None):
     """Log one run to MLflow.
@@ -9,11 +14,9 @@ def track(experiment, run_name, params=None, metrics=None, artifact=None):
     sqlite backend (mlflow 3 deprecated the file store); point elsewhere with
     MLFLOW_TRACKING_URI. View runs with `mlflow ui --backend-store-uri sqlite:///mlflow.db`.
     """
-    if os.environ.get("PBT_MLFLOW", "1") == "0":
+    if mlflow is None or os.environ.get("PBT_MLFLOW", "1") == "0":
         return
     try:
-        import mlflow
-
         if not os.environ.get("MLFLOW_TRACKING_URI"):
             mlflow.set_tracking_uri("sqlite:///mlflow.db")
         mlflow.set_experiment(experiment)
