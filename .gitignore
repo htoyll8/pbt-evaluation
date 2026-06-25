@@ -5,3 +5,6 @@ __pycache__/
 *.md
 !README.md
 fig_pbt_pipeline.tex
+mlruns/
+mlartifacts/
+mlflow.db

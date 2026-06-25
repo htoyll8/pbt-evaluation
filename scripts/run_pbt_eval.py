@@ -32,6 +32,9 @@ import tempfile
 from pathlib import Path
 from collections import defaultdict
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from tracking import track
+
 os.makedirs("pbt_data", exist_ok=True)
 
 
@@ -285,6 +288,32 @@ def main():
     if unit_pass:
         print(f"  overfit_pbt rate among unit-passing: "
               f"{len(overfit_pbt)}/{len(unit_pass)} ({100*len(overfit_pbt)/len(unit_pass):.1f}%)")
+
+    metrics = {
+        "total_attempts": len(all_rows),
+        "passes_unit": len(unit_pass),
+        "passes_pbt": len(pbt_pass),
+        "overfit_pbt": len(overfit_pbt),
+    }
+    if unit_pass:
+        metrics["overfit_pbt_rate_unit"] = len(overfit_pbt) / len(unit_pass)
+    private_rows = [r for r in all_rows if "passes_private" in r]
+    if private_rows:
+        metrics["passes_private"] = sum(1 for r in private_rows if r["passes_private"])
+        metrics["overfit_private"] = sum(1 for r in all_rows if r.get("overfit_private"))
+
+    track(
+        experiment="pbt-eval",
+        run_name=Path(args.results).stem,
+        params={
+            "results": args.results,
+            "pbts": args.pbts,
+            "dataset": args.dataset,
+            "timeout": args.timeout,
+        },
+        metrics=metrics,
+        artifact=args.out,
+    )
 
     if has_private:
         priv_pass       = [r for r in all_rows if r.get("passes_private")]

@@ -59,6 +59,17 @@ python scripts/run_pbt_eval.py \
 python scripts/print_pbt_table.py pbt_data/pbt_eval_output.jsonl
 ```
 
+## Experiment tracking
+
+Both `generate_pbts.py` and `run_pbt_eval.py` log a run to MLflow (params,
+metrics, and the output JSONL as an artifact). Runs go to a local
+`sqlite:///mlflow.db` by default; set `MLFLOW_TRACKING_URI` to point elsewhere,
+or `PBT_MLFLOW=0` to turn logging off. View runs with:
+
+```bash
+mlflow ui --backend-store-uri sqlite:///mlflow.db
+```
+
 ## File naming convention
 
 Files follow a self-describing pattern:
