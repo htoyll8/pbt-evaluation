@@ -2,3 +2,6 @@ __pycache__/
 .hypothesis/
 *.pyc
 .env
+*.md
+!README.md
+fig_pbt_pipeline.tex

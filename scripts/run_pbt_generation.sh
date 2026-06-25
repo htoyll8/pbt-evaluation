@@ -6,9 +6,9 @@ set -u
 
 DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
+# ~/.env_keys provides the provider config: OPENROUTER_API_KEY (preferred), or
+# ANTHROPIC_VERTEX_PROJECT / ANTHROPIC_VERTEX_REGION for the Vertex path.
 source ~/.env_keys
-export ANTHROPIC_VERTEX_PROJECT=your-gcp-project
-export ANTHROPIC_VERTEX_REGION=us-east5
 
 # HumanEval — run in foreground (fast, ~20 tasks)
 echo "==> Generating HumanEval PBTs (foreground)..."
@@ -24,8 +24,6 @@ echo "==> Launching MBPP+ PBT generation in tmux session 'pbt_gen'..."
 tmux kill-session -t pbt_gen 2>/dev/null || true
 tmux new-session -d -s pbt_gen \
     "source ~/.env_keys && \
-     export ANTHROPIC_VERTEX_PROJECT=your-gcp-project && \
-     export ANTHROPIC_VERTEX_REGION=us-east5 && \
      python3 $DIR/scripts/generate_pbts.py \
        --dataset mbppplus \
        --model claude-sonnet-4-5 \
