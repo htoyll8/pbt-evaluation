@@ -8,3 +8,8 @@ fig_pbt_pipeline.tex
 mlruns/
 mlartifacts/
 mlflow.db
+
+# pbt SQLite store (source of truth lives locally, not in git); WAL sidecars
+pbt.db
+pbt.db-wal
+pbt.db-shm
