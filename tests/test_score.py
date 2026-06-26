@@ -81,6 +81,17 @@ PBT_DOUBLE = (
     "    _t()\n"
 )
 
+# A Hypothesis property that the candidate `add` must satisfy for every integer pair.
+PBT_ADD = (
+    "from hypothesis import given\n"
+    "from hypothesis import strategies as st\n\n"
+    "def test_pbt(fn):\n"
+    "    @given(a=st.integers(), b=st.integers())\n"
+    "    def _t(a, b):\n"
+    "        assert fn(a, b) == a + b\n"
+    "    _t()\n"
+)
+
 
 def test_cache_hit_returns_without_recompute():
     """A pre-stored result is returned verbatim, so scoring never recomputes it."""
@@ -151,6 +162,40 @@ def test_pbt_passes_correct_program():
         result = score(conn, right, suite, task)
         assert result.passed is True and result.pass_fraction == 1.0, \
             "a correct program must pass the PBT (no counterexample)"
+
+
+def test_pbt_binds_entry_point_over_preceding_helper():
+    """entry_point binds the named function even when a helper `def` precedes it."""
+    with temp_db() as conn:
+        # entry_point="add" must be bound, not the earlier top-level def `helper`.
+        task = Task(task_id="t1", dataset="mbppplus", prompt="add two numbers",
+                    entry_point="add")
+        _insert_task(conn, task)
+        prog = Program(task_id="t1", prog_model="gpt-4",
+                       code="def helper(x):\n    return x * 2\n\ndef add(a, b):\n    return a + b")
+        suite = Suite(task_id="t1", suite_model="claude", kind="pbt", code=PBT_ADD)
+        _insert_program(conn, prog)
+        _insert_suite(conn, suite)
+        conn.commit()
+        result = score(conn, prog, suite, task)
+        assert result.passed is True and result.pass_fraction == 1.0, \
+            "entry_point must bind `add`, not the preceding helper `def`"
+
+
+def test_pbt_falls_back_to_first_def_without_entry_point():
+    """With no entry_point set, binding falls back to the first top-level `def`."""
+    with temp_db() as conn:
+        task = Task(task_id="t1", dataset="mbppplus", prompt="double a number")  # entry_point=""
+        _insert_task(conn, task)
+        prog = Program(task_id="t1", prog_model="gpt-4",
+                       code="def double(x):\n    return 2 * x")
+        suite = Suite(task_id="t1", suite_model="claude", kind="pbt", code=PBT_DOUBLE)
+        _insert_program(conn, prog)
+        _insert_suite(conn, suite)
+        conn.commit()
+        result = score(conn, prog, suite, task)
+        assert result.passed is True and result.pass_fraction == 1.0, \
+            "the first top-level def must be bound when no entry_point is given"
 
 
 if __name__ == "__main__":

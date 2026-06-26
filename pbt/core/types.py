@@ -16,6 +16,7 @@ class Task:
         dataset: Name of the source benchmark (e.g. "mbppplus", "humaneval").
         prompt: Natural-language spec shown to the model.
         reference_solution: Canonical solution.
+        entry_point: Name of the task's candidate function, bound during scoring when the dataset names one ("" otherwise).
         setup: Code run before a candidate program.
         prelude: Code run after the program (e.g. bind `candidate` for HumanEval).
         per_timeout: Seconds allowed per test unit.
@@ -26,6 +27,7 @@ class Task:
     dataset: str
     prompt: str
     reference_solution: str = ""
+    entry_point: str = ""
     setup: str = ""
     prelude: str = ""
     per_timeout: int = 5

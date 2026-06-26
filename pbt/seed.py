@@ -15,12 +15,12 @@ Unit-test serialization:
     execution context (setup, prelude, per_timeout) lives on the task row, where
     the worker already expects it.
 
-Reference solutions:
-    The grading loaders (mbppplus, humaneval, apps) do not carry a canonical
-    solution onto their `Task` objects, so `reference_solution` is left "". The
-    underlying HF datasets do expose one (mbppplus `code`, humaneval
-    `canonical_solution`, apps `solutions`); populating it would mean extending
-    the grading loaders, which is out of scope here.
+Reference solutions and entry points:
+    The grading loaders carry a full runnable `reference_solution` and an
+    `entry_point` (the candidate function's name) onto their `Task` objects, and
+    both are copied straight onto the seeded `tasks` row. The reference solution
+    feeds the later PBT validity filter; the entry point lets score() bind the
+    candidate by name. Loaders that name neither leave them "".
 """
 import json
 import sqlite3
@@ -54,9 +54,11 @@ def _insert_task(conn: sqlite3.Connection, task: Task) -> None:
     """
     conn.execute(
         "INSERT OR IGNORE INTO tasks(task_id, dataset, prompt, reference_solution, "
-        "setup, prelude, per_timeout, io_mode, difficulty) VALUES (?,?,?,?,?,?,?,?,?)",
-        (task.task_id, task.dataset, task.prompt, task.reference_solution, task.setup,
-         task.prelude, task.per_timeout, task.io_mode, task.difficulty),
+        "entry_point, setup, prelude, per_timeout, io_mode, difficulty) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?)",
+        (task.task_id, task.dataset, task.prompt, task.reference_solution,
+         task.entry_point, task.setup, task.prelude, task.per_timeout, task.io_mode,
+         task.difficulty),
     )
 
 
@@ -101,7 +103,8 @@ def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10) -> i
             task_id=gt.task_id,
             dataset=dataset,
             prompt=gt.description,
-            reference_solution="",
+            reference_solution=gt.reference_solution,
+            entry_point=gt.entry_point,
             setup=gt.setup,
             prelude=gt.prelude,
             per_timeout=gt.per_timeout,

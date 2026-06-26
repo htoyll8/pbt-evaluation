@@ -39,13 +39,13 @@ def _load_tasks(conn: sqlite3.Connection, dataset: str | None) -> list[Task]:
     """
     if dataset is None:
         rows = conn.execute(
-            "SELECT task_id, dataset, prompt, reference_solution, setup, prelude, "
-            "per_timeout, io_mode, difficulty FROM tasks ORDER BY task_id"
+            "SELECT task_id, dataset, prompt, reference_solution, entry_point, setup, "
+            "prelude, per_timeout, io_mode, difficulty FROM tasks ORDER BY task_id"
         ).fetchall()
     else:
         rows = conn.execute(
-            "SELECT task_id, dataset, prompt, reference_solution, setup, prelude, "
-            "per_timeout, io_mode, difficulty FROM tasks WHERE dataset = ? "
+            "SELECT task_id, dataset, prompt, reference_solution, entry_point, setup, "
+            "prelude, per_timeout, io_mode, difficulty FROM tasks WHERE dataset = ? "
             "ORDER BY task_id",
             (dataset,),
         ).fetchall()
@@ -55,6 +55,7 @@ def _load_tasks(conn: sqlite3.Connection, dataset: str | None) -> list[Task]:
             dataset=row["dataset"],
             prompt=row["prompt"],
             reference_solution=row["reference_solution"] or "",
+            entry_point=row["entry_point"] or "",
             setup=row["setup"],
             prelude=row["prelude"],
             per_timeout=row["per_timeout"],

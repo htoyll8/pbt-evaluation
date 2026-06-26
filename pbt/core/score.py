@@ -24,8 +24,10 @@ Unit / private suites:
 PBT suites:
     A pbt suite's `code` is a Hypothesis module defining `test_pbt(fn)` (a @given
     property that takes the candidate as its single argument), exactly as the
-    pbt_data generators write it. We exec the program, bind the candidate by its
-    top-level `def` name, and call test_pbt(candidate) inside an isolated
+    pbt_data generators write it. We exec the program, bind the candidate by the
+    task's `entry_point` when that name is set and present in the program (falling
+    back to the first top-level `def` otherwise), and call test_pbt(candidate)
+    inside an isolated
     subprocess that mirrors the scorer's process-group isolation and wall-clock
     SIGKILL backstop. passed is True when no counterexample is found; pass_fraction
     is binary (1.0 or 0.0) because a property has no partial credit.
@@ -81,6 +83,12 @@ def _candidate_name(code):
     return m.group(1) if m else "candidate"
 
 
+def _bind_candidate(namespace, code, entry_point):
+    if entry_point and entry_point in namespace:
+        return namespace[entry_point]  # the task names its function: bind it directly
+    return namespace[_candidate_name(code)]  # fall back to the first top-level def
+
+
 def main():
     job = json.load(sys.stdin)
     from hypothesis import HealthCheck, Phase, settings
@@ -102,7 +110,7 @@ def main():
         exec("import sys\nfrom typing import *", namespace)
         exec(job["program"], namespace)
         exec(job["pbt"], namespace)
-        candidate = namespace[_candidate_name(job["program"])]
+        candidate = _bind_candidate(namespace, job["program"], job.get("entry_point", ""))
         namespace["test_pbt"](candidate)
         passed = True  # property held: no counterexample
     except BaseException:
@@ -180,10 +188,11 @@ def _score_pbt(program: Program, suite: Suite, task: Task) -> tuple[bool, float]
     group and the whole tree is SIGKILLed if it outlives the wall-clock ceiling.
 
     Args:
-        program: The candidate program; the property is bound to its top-level
-            function.
+        program: The candidate program; the property is bound to the function
+            named by the task's entry_point, or its first top-level def otherwise.
         suite: The PBT suite whose `code` defines `test_pbt(fn)`.
-        task: The task, used for its per_timeout floor on the wall-clock budget.
+        task: The task, supplying entry_point for binding and per_timeout as the
+            floor on the wall-clock budget.
 
     Returns:
         A (passed, pass_fraction) pair; passed means no counterexample was found
@@ -192,6 +201,7 @@ def _score_pbt(program: Program, suite: Suite, task: Task) -> tuple[bool, float]
     job = json.dumps({
         "program": program.code,
         "pbt": suite.code,
+        "entry_point": task.entry_point,
         "max_examples": PBT_MAX_EXAMPLES,
         "derandomize": PBT_DERANDOMIZE,
         "deadline": PBT_DEADLINE,

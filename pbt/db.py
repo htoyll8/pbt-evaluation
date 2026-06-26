@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     dataset            TEXT NOT NULL,
     prompt             TEXT NOT NULL,
     reference_solution TEXT,                       -- for the PBT validity filter
+    entry_point        TEXT NOT NULL DEFAULT '',   -- name of the task's candidate function
     setup              TEXT NOT NULL DEFAULT '',
     prelude            TEXT NOT NULL DEFAULT '',
     per_timeout        INTEGER NOT NULL DEFAULT 5,

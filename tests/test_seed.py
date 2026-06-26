@@ -111,6 +111,22 @@ def test_unit_suite_blob_is_consumable_json(monkeypatch):
         assert blob["tests"] == [["hi\n", "hi\n"]], f"blob must carry the tests verbatim, got {blob['tests']!r}"
 
 
+def test_seeded_task_carries_entry_point_and_reference(monkeypatch):
+    """A seeded task row copies the grading task's entry_point and reference_solution."""
+    gt = GradingTask(task_id="f1", description="add", setup="",
+                     tests=["assert add(1,2)==3"], prelude="candidate = add",
+                     entry_point="add", reference_solution="def add(a, b):\n    return a + b")
+    monkeypatch.setattr(seed, "load_tasks", _fake_loader([gt]))
+    with temp_db() as conn:
+        seed.seed_dataset(conn, "mbppplus", n_tasks=10)
+        row = conn.execute(
+            "SELECT entry_point, reference_solution FROM tasks WHERE task_id='f1'").fetchone()
+        assert row["entry_point"] == "add", \
+            f"seeded task must carry the entry_point, got {row['entry_point']!r}"
+        assert row["reference_solution"].strip(), \
+            "seeded task must carry a non-empty reference_solution"
+
+
 def test_seeding_is_idempotent(monkeypatch):
     """Re-running the same seed adds no new `tasks` or `suites` rows."""
     monkeypatch.setattr(seed, "load_tasks", _fake_loader(_function_tasks()))
