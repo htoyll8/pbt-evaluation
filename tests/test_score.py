@@ -16,7 +16,7 @@ from contextlib import contextmanager
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from pbt import db
-from pbt.core import Program, Suite, Task, score
+from pbt.core import Program, Suite, Task, run_property, score
 
 
 @contextmanager
@@ -196,6 +196,27 @@ def test_pbt_falls_back_to_first_def_without_entry_point():
         result = score(conn, prog, suite, task)
         assert result.passed is True and result.pass_fraction == 1.0, \
             "the first top-level def must be bound when no entry_point is given"
+
+
+def test_run_property_returns_true_for_correct_program():
+    """run_property reports True (no counterexample) for a correct program, no DB."""
+    code = "def double(x):\n    return 2 * x"
+    assert run_property(code, PBT_DOUBLE) is True, \
+        "a correct program must satisfy the property"
+
+
+def test_run_property_returns_false_for_wrong_program():
+    """run_property reports False when the property finds a counterexample, no DB."""
+    code = "def double(x):\n    return x + 1"  # only correct at x == 1
+    assert run_property(code, PBT_DOUBLE) is False, \
+        "a wrong program must produce a counterexample"
+
+
+def test_run_property_binds_entry_point_over_preceding_helper():
+    """run_property binds the named entry_point, not a preceding top-level def."""
+    code = "def helper(x):\n    return x * 2\n\ndef add(a, b):\n    return a + b"
+    assert run_property(code, PBT_ADD, entry_point="add") is True, \
+        "entry_point must bind `add`, not the preceding helper `def`"
 
 
 if __name__ == "__main__":

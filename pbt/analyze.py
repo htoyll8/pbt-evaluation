@@ -10,14 +10,25 @@ mutation physically impossible. The functions accept an already-open connection 
 the caller owns its lifecycle.
 
 Definitions:
-    eligible: a (program, pbt) pair whose program passes its task's unit suite.
+    eligible: a (program, pbt) pair whose program passes its task's unit suite and
+        whose pbt is valid (its task's reference solution passes it).
     caught: an eligible pair whose program fails the pbt (passed = 0).
     overfit-catch rate: caught / eligible over the eligible population.
+
+Validity filter:
+    Only pbts marked valid = 1 by pbt.validity count. A pbt whose reference
+    solution fails it (valid = 0) or that has not been checked (valid NULL) is a
+    suspect property and is excluded from both the eligible and the caught counts,
+    so a buggy PBT can never be credited with a false catch. This is enforced by
+    joining each pbt result back to its suite on suite_id and requiring
+    suites.valid = 1.
 """
 import sqlite3
 
 # Pairs eligible for the metric: a program that passes its unit suite, joined to
-# every pbt result for that program. "caught" marks the pbt that failed (passed=0).
+# every valid pbt result for that program. "caught" marks the pbt that failed
+# (passed=0). The join to suites filters out pbts that are invalid or unchecked
+# (suites.valid = 1 required), so only trusted properties contribute.
 _ELIGIBLE_PAIRS = """
 WITH unit_pass AS (
     SELECT DISTINCT program_id
@@ -30,7 +41,8 @@ SELECT
     CASE WHEN r.passed = 0 THEN 1 ELSE 0 END  AS caught
 FROM results AS r
 JOIN unit_pass AS u ON u.program_id = r.program_id
-WHERE r.kind = 'pbt'
+JOIN suites AS s ON s.suite_id = r.suite_id
+WHERE r.kind = 'pbt' AND s.valid = 1
 """
 
 _OVERALL_SQL = f"""

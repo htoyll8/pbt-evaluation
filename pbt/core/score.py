@@ -181,34 +181,40 @@ def _score_units(program: Program, suite: Suite, task: Task) -> tuple[bool, floa
     return fraction >= 1.0, fraction
 
 
-def _score_pbt(program: Program, suite: Suite, task: Task) -> tuple[bool, float]:
-    """Score a PBT suite by running its property in an isolated subprocess.
+def run_property(program_code: str, pbt_code: str, entry_point: str = "",
+                 per_timeout: int = 5) -> bool:
+    """Run a PBT property against a program in an isolated subprocess.
 
-    Mirrors the grading scorer's isolation: the worker runs in its own process
-    group and the whole tree is SIGKILLed if it outlives the wall-clock ceiling.
+    The public, DB-free core of PBT scoring. It runs the property module's
+    `test_pbt(fn)` against the given program in the same isolated worker that
+    `_score_pbt` uses (its own process group, with a wall-clock SIGKILL backstop),
+    binding the candidate by entry_point and falling back to the first top-level
+    def when entry_point is unset or absent. This neither reads nor writes the
+    store, so it can validate arbitrary code, for example a task's reference
+    solution against a candidate PBT.
 
     Args:
-        program: The candidate program; the property is bound to the function
-            named by the task's entry_point, or its first top-level def otherwise.
-        suite: The PBT suite whose `code` defines `test_pbt(fn)`.
-        task: The task, supplying entry_point for binding and per_timeout as the
-            floor on the wall-clock budget.
+        program_code: Source of the program whose function the property is bound to.
+        pbt_code: A Hypothesis module defining `test_pbt(fn)`.
+        entry_point: Name of the function to bind, or "" to use the first def.
+        per_timeout: Per-test budget that raises the wall-clock floor when larger
+            than the module default.
 
     Returns:
-        A (passed, pass_fraction) pair; passed means no counterexample was found
-        and pass_fraction is binary (1.0 or 0.0).
+        True if the property held with no counterexample, False if a counterexample
+        was found or the program/property crashed, timed out, or failed to import.
     """
     job = json.dumps({
-        "program": program.code,
-        "pbt": suite.code,
-        "entry_point": task.entry_point,
+        "program": program_code,
+        "pbt": pbt_code,
+        "entry_point": entry_point,
         "max_examples": PBT_MAX_EXAMPLES,
         "derandomize": PBT_DERANDOMIZE,
         "deadline": PBT_DEADLINE,
         "database": PBT_DATABASE,
         "phases": list(PBT_PHASES),
     })
-    wall = max(PBT_WALL_SECONDS, task.per_timeout)
+    wall = max(PBT_WALL_SECONDS, per_timeout)
     proc = subprocess.Popen(
         [sys.executable, "-c", _PBT_WORKER],
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
@@ -221,15 +227,37 @@ def _score_pbt(program: Program, suite: Suite, task: Task) -> tuple[bool, float]
             os.killpg(os.getpgid(proc.pid), signal.SIGKILL)  # kill the whole tree
         except Exception:
             proc.kill()
-        return False, 0.0
+        return False
     for line in reversed(out.splitlines()):
         if line.startswith("##PBT##"):
             try:
-                passed = bool(json.loads(line[len("##PBT##"):])["passed"])
+                return bool(json.loads(line[len("##PBT##"):])["passed"])
             except Exception:
-                return False, 0.0
-            return passed, 1.0 if passed else 0.0
-    return False, 0.0  # no sentinel: crash or import failure counts as a fail
+                return False
+    return False  # no sentinel: crash or import failure counts as a fail
+
+
+def _score_pbt(program: Program, suite: Suite, task: Task) -> tuple[bool, float]:
+    """Score a PBT suite by running its property in an isolated subprocess.
+
+    Mirrors the grading scorer's isolation: the worker runs in its own process
+    group and the whole tree is SIGKILLed if it outlives the wall-clock ceiling.
+    Delegates the actual run to run_property and maps the binary verdict onto a
+    (passed, pass_fraction) pair.
+
+    Args:
+        program: The candidate program; the property is bound to the function
+            named by the task's entry_point, or its first top-level def otherwise.
+        suite: The PBT suite whose `code` defines `test_pbt(fn)`.
+        task: The task, supplying entry_point for binding and per_timeout as the
+            floor on the wall-clock budget.
+
+    Returns:
+        A (passed, pass_fraction) pair; passed means no counterexample was found
+        and pass_fraction is binary (1.0 or 0.0).
+    """
+    passed = run_property(program.code, suite.code, task.entry_point, task.per_timeout)
+    return passed, 1.0 if passed else 0.0
 
 
 def score(conn: sqlite3.Connection, program: Program, suite: Suite, task: Task) -> Result:

@@ -49,14 +49,31 @@ def _result(conn: sqlite3.Connection, program_id: str, suite_id: str, *,
     )
 
 
+def _pbt_suite(conn: sqlite3.Connection, suite_id: str, *, suite_model: str,
+               valid: int | None) -> None:
+    """Insert a synthetic pbt suites row with the given validity verdict.
+
+    The metric now joins pbt results to their suite and requires valid = 1, so the
+    pbts a test relies on must be present and marked valid.
+    """
+    conn.execute(
+        "INSERT OR IGNORE INTO suites(suite_id, task_id, suite_model, kind, code, valid) "
+        "VALUES (?,?,?,?,?,?)",
+        (suite_id, "t1", suite_model, "pbt", "# pbt", valid),
+    )
+
+
 def _seed_three_programs(conn: sqlite3.Connection) -> None:
     """Seed a store with one overfit catch, one clean pass, one ineligible program.
 
-    All programs are written by model "A"; all pbts by model "B".
+    All programs are written by model "A"; all pbts by model "B". The single pbt
+    suite is marked valid so it counts toward the metric.
         p_overfit: passes unit, fails pbt   -> eligible and caught.
         p_clean:   passes unit, passes pbt  -> eligible, not caught.
         p_bad:     fails unit, fails pbt    -> ineligible (excluded entirely).
     """
+    _pbt_suite(conn, "s_pbt", suite_model="B", valid=1)
+
     _result(conn, "p_overfit", "s_unit", prog_model="A", suite_model="A", kind="unit", passed=1)
     _result(conn, "p_overfit", "s_pbt", prog_model="A", suite_model="B", kind="pbt", passed=0)
 
@@ -95,6 +112,8 @@ def test_matrix_separates_distinct_model_pairs():
     """Pbts from two suite models split into two cells with independent rates."""
     with temp_db() as conn:
         # Program by A passes unit; pbt from B catches it, pbt from C does not.
+        _pbt_suite(conn, "s_pbt_b", suite_model="B", valid=1)
+        _pbt_suite(conn, "s_pbt_c", suite_model="C", valid=1)
         _result(conn, "p1", "s_unit", prog_model="A", suite_model="A", kind="unit", passed=1)
         _result(conn, "p1", "s_pbt_b", prog_model="A", suite_model="B", kind="pbt", passed=0)
         _result(conn, "p1", "s_pbt_c", prog_model="A", suite_model="C", kind="pbt", passed=1)
@@ -102,6 +121,24 @@ def test_matrix_separates_distinct_model_pairs():
         by_pair = {(c["prog_model"], c["suite_model"]): c for c in analyze.overfit_matrix(conn)}
         assert by_pair[("A", "B")]["rate"] == 1.0, "B's pbt catches A's overfit"
         assert by_pair[("A", "C")]["rate"] == 0.0, "C's pbt misses it"
+
+
+def test_invalid_pbt_is_excluded_from_the_rate():
+    """A pbt with valid != 1 counts toward neither eligible nor caught."""
+    with temp_db() as conn:
+        # One valid pbt (caught) and one invalid pbt (a would-be catch) on the same
+        # unit-passing program. Only the valid pbt may contribute to the metric.
+        _pbt_suite(conn, "s_pbt_valid", suite_model="B", valid=1)
+        _pbt_suite(conn, "s_pbt_buggy", suite_model="C", valid=0)
+        _result(conn, "p1", "s_unit", prog_model="A", suite_model="A", kind="unit", passed=1)
+        _result(conn, "p1", "s_pbt_valid", prog_model="A", suite_model="B", kind="pbt", passed=0)
+        _result(conn, "p1", "s_pbt_buggy", prog_model="A", suite_model="C", kind="pbt", passed=0)
+        conn.commit()
+        out = analyze.overfit_catch_rate(conn)
+        assert out["eligible"] == 1, "only the valid pbt is eligible; the buggy one is dropped"
+        assert out["caught"] == 1, "only the valid pbt's catch counts"
+        by_pair = {(c["prog_model"], c["suite_model"]): c for c in analyze.overfit_matrix(conn)}
+        assert ("A", "C") not in by_pair, "the invalid pbt's cell must not appear at all"
 
 
 def test_empty_db_is_safe_zero_and_none():
