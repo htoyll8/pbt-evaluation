@@ -2,6 +2,7 @@
 
 Types (Task / Program / Suite / Result) mirror the DB rows; score(program, suite) is the single graded operation that everything else reduces to.
 """
+from pbt.core.score import score
 from pbt.core.types import Program, Result, Suite, Task
 
-__all__ = ["Task", "Program", "Suite", "Result"]
+__all__ = ["Task", "Program", "Suite", "Result", "score"]
