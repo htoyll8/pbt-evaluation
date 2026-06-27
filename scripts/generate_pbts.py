@@ -99,8 +99,9 @@ You are writing a property-based test using the Python Hypothesis library for a 
 ## Instructions
 Write a Hypothesis `@given` test that:
 1. Generates valid inputs using `hypothesis.strategies` (st)
-2. Asserts PROPERTIES of the output: invariants that must hold for ALL valid inputs
-3. Calls the provided `fn` as the function under test; do not redefine that function at the top level
+2. Draws inputs that actually exercise the function: when arguments are related, draw them together (e.g. pick a search character from the string, not independently), using `st.data()` if needed
+3. Asserts PROPERTIES of the output: invariants that must hold for ALL valid inputs
+4. Calls the provided `fn` as the function under test; do not redefine that function at the top level
 
 Good properties to consider:
 1. The test oracle: implement a simple/brute-force version inside the test (a helper, not a top-level redefinition of the function) and assert `fn` agrees with it
