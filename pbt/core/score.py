@@ -109,8 +109,11 @@ def main():
     try:
         exec("import sys\nfrom typing import *", namespace)
         exec(job["program"], namespace)
-        exec(job["pbt"], namespace)
+        # Bind the candidate BEFORE running the PBT: a top-level def in the PBT (e.g. a
+        # reimplementation of the function under test) would otherwise overwrite the
+        # candidate in this shared namespace, and we would test the PBT's own version.
         candidate = _bind_candidate(namespace, job["program"], job.get("entry_point", ""))
+        exec(job["pbt"], namespace)
         namespace["test_pbt"](candidate)
         passed = True  # property held: no counterexample
     except BaseException:
