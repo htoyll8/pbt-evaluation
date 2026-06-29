@@ -9,7 +9,16 @@ mlruns/
 mlartifacts/
 mlflow.db
 
-# pbt SQLite store (source of truth lives locally, not in git); WAL sidecars
-pbt.db
-pbt.db-wal
-pbt.db-shm
+# pbt SQLite stores (source of truth lives locally, not in git) + WAL sidecars
+*.db
+*.db-wal
+*.db-shm
+
+# generated experiment artifacts
+pbt_data/
+results/
+*.txt
+
+# local tooling
+.claude/
+skills-lock.json
