@@ -205,11 +205,15 @@ Write a Hypothesis `@given` test that:
 
 Good properties to consider:
 - Output type and shape (result is always a list, length is non-negative, etc.)
-- Idempotency (calling twice gives same result)
 - Boundary behaviour (empty input → specific output)
 - Relationship between input and output (all elements of output appear in input)
 - Monotonicity (larger input → larger/smaller output)
 - Commutativity where applicable
+
+Idempotency (`f(f(x)) == f(x)`) holds only for some functions, so assert it only when the
+operation is genuinely idempotent AND the output is a valid input to the function. Many are not:
+squaring is not idempotent, and a function returning a bool or int from a string cannot be
+re-applied; asserting idempotency there would fail the correct solution.
 
 Your response must be a single Python code block containing:
 - All necessary imports (hypothesis, hypothesis.strategies as st, etc.)
