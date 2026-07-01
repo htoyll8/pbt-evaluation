@@ -96,23 +96,21 @@ You are writing a property-based test using the Python Hypothesis library for a 
 ## Task
 {prompt}
 
-## Unit tests (for reference only — do NOT replicate these as properties)
-{unit_tests}
-
 ## Instructions
 Write a Hypothesis `@given` test that:
 1. Generates valid inputs using `hypothesis.strategies` (st)
-2. Asserts PROPERTIES of the output — invariants that must hold for ALL valid inputs
-3. Does NOT assert specific expected values (that would just re-implement a unit test)
-4. Covers at least 2 distinct properties if possible
+2. Draws inputs that actually exercise the function: when arguments are related, draw them together (e.g. pick a search character from the string, not independently), using `st.data()` if needed
+3. Asserts PROPERTIES of the output: invariants that must hold for ALL valid inputs
+4. Calls the provided `fn` as the function under test; do not redefine that function at the top level
 
 Good properties to consider:
-- Output type and shape (result is always a list, length is non-negative, etc.)
-- Idempotency (calling twice gives same result)
-- Boundary behaviour (empty input → specific output)
-- Relationship between input and output (all elements of output appear in input)
-- Monotonicity (larger input → larger/smaller output)
-- Commutativity where applicable
+1. The test oracle: implement a simple/brute-force version inside the test (a helper, not a top-level redefinition of the function) and assert `fn` agrees with it
+2. There and back again: an inverse round-trips: decode(encode(x)) == x
+3. Different paths, same destination: two routes give the same result
+4. Some things never change: an invariant is preserved (permutation, sum, bounds)
+5. Solve a smaller problem first: relate f(x) to f on a smaller input
+6. Hard to prove, easy to verify: the result satisfies its defining condition
+7. The more things change, the more they stay the same: idempotency: f(f(x)) == f(x)
 
 Your response must be a single Python code block containing:
 - All necessary imports (hypothesis, hypothesis.strategies as st, etc.)
@@ -121,12 +119,11 @@ Your response must be a single Python code block containing:
 
 Format:
 ```python
-from hypothesis import given, settings, assume
+from hypothesis import given
 from hypothesis import strategies as st
 
 def test_pbt(fn):
     @given(...)
-    @settings(max_examples=100)
     def _test(...):
         result = fn(...)
         # assert properties here
@@ -208,11 +205,15 @@ Write a Hypothesis `@given` test that:
 
 Good properties to consider:
 - Output type and shape (result is always a list, length is non-negative, etc.)
-- Idempotency (calling twice gives same result)
 - Boundary behaviour (empty input → specific output)
 - Relationship between input and output (all elements of output appear in input)
 - Monotonicity (larger input → larger/smaller output)
 - Commutativity where applicable
+
+Idempotency (`f(f(x)) == f(x)`) holds only for some functions, so assert it only when the
+operation is genuinely idempotent AND the output is a valid input to the function. Many are not:
+squaring is not idempotent, and a function returning a bool or int from a string cannot be
+re-applied; asserting idempotency there would fail the correct solution.
 
 Your response must be a single Python code block containing:
 - All necessary imports (hypothesis, hypothesis.strategies as st, etc.)

@@ -4,7 +4,22 @@ __pycache__/
 .env
 *.md
 !README.md
+!HANDOFF.md
 fig_pbt_pipeline.tex
 mlruns/
 mlartifacts/
 mlflow.db
+
+# pbt SQLite stores (source of truth lives locally, not in git) + WAL sidecars
+*.db
+*.db-wal
+*.db-shm
+
+# generated experiment artifacts
+pbt_data/
+results/
+*.txt
+
+# local tooling
+.claude/
+skills-lock.json
