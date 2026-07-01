@@ -10,13 +10,22 @@ The current pipeline is the `pbt/` package writing to a **SQLite store** (not th
 ## Setup
 
 ```bash
+git checkout main && git pull     # latest pipeline (merged from feat/mutation-eval)
 pip install -r requirements.txt
-source ~/.env_keys            # exports OPENROUTER_API_KEY (shared lab key; pilots only)
+source ~/.env_keys                # exports OPENROUTER_API_KEY (shared lab key; pilots only)
 ```
 
-Models route through OpenRouter when `OPENROUTER_API_KEY` is set. Bare names map to slugs
-(gpt-4o-mini, gpt-5.1, claude-sonnet-4-5, ...); pass an exact slug as `--prog-model`/`--suite-model`
-to override.
+Models route through OpenRouter when `OPENROUTER_API_KEY` is set. **If it is not set, the code
+silently falls back to your personal `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` and bills you** — for
+this project use OpenRouter (the lab key). Verify before a run:
+
+```bash
+echo "OpenRouter: $([ -n "$OPENROUTER_API_KEY" ] && echo set || echo NOT set)"
+```
+
+Bare names map to slugs (gpt-4o-mini, gpt-5.1, claude-sonnet-4-5, ...); pass an exact slug as
+`--prog-model`/`--suite-model` to override. The run prints `Using OpenRouter ...` vs `Using direct
+OpenAI ...` so you can confirm the provider.
 
 ## Run one cross-model cell (end to end)
 
