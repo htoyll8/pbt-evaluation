@@ -4,6 +4,7 @@ __pycache__/
 .env
 *.md
 !README.md
+!HANDOFF.md
 fig_pbt_pipeline.tex
 mlruns/
 mlartifacts/
