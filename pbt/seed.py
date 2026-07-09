@@ -77,7 +77,8 @@ def _insert_suite(conn: sqlite3.Connection, suite: Suite) -> None:
     )
 
 
-def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10) -> int:
+def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10,
+                 difficulties: tuple[str, ...] | None = None) -> int:
     """Seed `tasks` and benchmark unit `suites` for a registered dataset.
 
     Loads up to `n_tasks` problems through the existing grading loaders, maps each
@@ -89,6 +90,8 @@ def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10) -> i
         conn: Open read-write connection to the store.
         dataset: Name of a registered grading dataset (e.g. "mbppplus", "humaneval", "apps").
         n_tasks: Maximum number of tasks to load from the dataset.
+        difficulties: Optional difficulty tiers to keep (only supported by "apps",
+            e.g. ("introductory",) or ("competition",)); None loads the dataset as-is.
 
     Returns:
         The number of tasks processed from the loader (the count requested and
@@ -97,7 +100,7 @@ def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10) -> i
     Raises:
         ValueError: If `dataset` is not a registered grading dataset.
     """
-    grading_tasks = load_tasks(dataset, n_tasks)
+    grading_tasks = load_tasks(dataset, n_tasks, difficulties=difficulties)
     for gt in grading_tasks:
         task = Task(
             task_id=gt.task_id,
