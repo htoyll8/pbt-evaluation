@@ -23,3 +23,8 @@ results/
 # local tooling
 .claude/
 skills-lock.json
+
+# local env / OS cruft
+.venv/
+venv/
+.DS_Store

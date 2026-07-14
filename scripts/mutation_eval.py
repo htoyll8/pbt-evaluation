@@ -7,10 +7,13 @@ valid PBT. The headline number is the PBT catch rate (pbt_caught / base_passing)
 reference baseline, not a gate condition.
 
 Weak gate and strong comparator by dataset:
-  mbppplus  : weak = base `test_list`; strong = the seeded plus harness (kind='unit' suites).
-  humaneval : weak = original HumanEval `check()` asserts; strong = the HumanEval+ harness
-              (evalplus/humanevalplus), because the seeded unit suite here is itself the weak
-              set, so the strong comparator can't come from the store.
+  mbppplus  : weak = base `test_list`; strong = the EvalPlus plus harness.
+  humaneval : weak = original HumanEval `check()` asserts; strong = the HumanEval+ harness.
+
+The weak gate is fetched fresh from the benchmark (see load_base_tests). The strong comparator
+is read from the store's kind='private' suites, which pbt.seed writes for both datasets (see
+load_plus_tests). Stores seeded before the weak-gate migration have no private suites and are
+rejected: back then mbppplus seeded the plus harness as kind='unit', which is now the weak gate.
 
 Usage: python scripts/mutation_eval.py <db> [--dataset mbppplus|humaneval] [--limit 20]
 """
@@ -52,20 +55,28 @@ def load_base_tests(dataset: str) -> dict:
     raise ValueError(f"base gate is wired for mbppplus and humaneval only, not {dataset!r}")
 
 
-def load_plus_tests(dataset: str) -> dict | None:
-    """task_id -> [strong-harness test string], the STRONG comparator, or None to fall back to
-    the seeded kind='unit' suites.
+def load_plus_tests(conn: sqlite3.Connection) -> dict:
+    """task_id -> (tests, prelude, per_timeout): the STRONG comparator, from the store.
 
-    MBPP+'s strong tests are already in the db (its loader seeds the plus harness as the unit
-    suite), so returning None reuses them. HumanEval's are not: its unit suite is the weak gate
-    itself, so reading it back would give a comparator identical to the gate (plus_caught always
-    0). Instead we fetch the strong set fresh from HumanEval+ (evalplus/humanevalplus `test`) and
-    run it whole, appending the `check(entry_point)` call, all-or-nothing.
+    The strong comparator is the benchmark's augmented harness, which pbt.seed now writes as a
+    kind='private' suite for every dataset whose loader supplies `Task.private_tests`: MBPP+'s
+    plus harness, HumanEval's humanevalplus. Reading it from the store rather than re-fetching
+    keeps this comparator byte-identical to the one pbt.evaluate scores, so the mutation track
+    and the main pipeline cannot drift apart.
+
+    `prelude` and `per_timeout` are taken from the suite blob when it carries them (MBPP+'s plus
+    cases need the harness preamble bound; HumanEval's harness runs whole and needs a longer
+    timeout), and are None otherwise, meaning "inherit the task's".
+
+    NB: this previously fell back to kind='unit' for mbppplus, back when that loader seeded the
+    plus harness as the unit suite. kind='unit' is now the WEAK gate, so reading it here would
+    make the strong comparator identical to the gate and force plus_caught to 0.
     """
-    if dataset != "humaneval":
-        return None
-    ds = load_dataset("evalplus/humanevalplus")["test"]
-    return {str(ex["task_id"]): [ex["test"] + f"\ncheck({ex['entry_point']})"] for ex in ds}
+    out = {}
+    for tid, code in conn.execute("select task_id, code from suites where kind='private'"):
+        blob = json.loads(code)
+        out[str(tid)] = (blob["tests"], blob.get("prelude"), blob.get("per_timeout"))
+    return out
 
 
 def _passes(setup: str, tests: list, prelude: str, program: str, per_timeout: int = 5) -> bool:
@@ -82,14 +93,15 @@ def main(db: str, dataset: str, limit: int) -> None:
         "plus_caught INTEGER, pbt_caught INTEGER, "
         "PRIMARY KEY (task_id, suite_model))"
     )
-    # Strong comparator: reuse the seeded plus harness (mbppplus) unless the dataset loads its
-    # strong set from elsewhere (humaneval -> HumanEval+); see load_plus_tests.
-    strong = load_plus_tests(dataset)
-    plus_by_task = strong if strong is not None else {
-        tid: json.loads(code)["tests"]
-        for tid, code in c.execute("select task_id, code from suites where kind='unit'")
-    }
-    plus_timeout = 30 if dataset == "humaneval" else 5  # HumanEval+ runs the whole harness at once
+    # Strong comparator: the seeded kind='private' suite (the benchmark's augmented harness),
+    # carrying its own prelude/timeout where it needs one; see load_plus_tests.
+    plus_by_task = load_plus_tests(c)
+    if not plus_by_task:
+        raise SystemExit(
+            f"no kind='private' suites in {db!r}: the strong comparator has nowhere to come from. "
+            "This store predates the weak-gate migration; rebuild it with "
+            "scripts/migrate_weak_gate.py."
+        )
     tasks = c.execute("select task_id, reference_solution, entry_point, setup, prelude from tasks").fetchall()
 
     total_overfit_pairs = total_killed = total_plus = 0
@@ -98,9 +110,14 @@ def main(db: str, dataset: str, limit: int) -> None:
         if tid not in base:
             continue
         base_tests, base_setup, base_prelude = base[tid]
-        plus_tests = plus_by_task.get(tid, [])
-        if not plus_tests:
+        entry = plus_by_task.get(tid)
+        if not entry:
             continue
+        plus_tests, plus_prelude, plus_timeout = entry
+        if plus_prelude is None:
+            plus_prelude = prelude or ""
+        if plus_timeout is None:
+            plus_timeout = 5
         # gate: mutants that pass the WEAK base tests (slip past weak public).
         # plus and the PBT are measured comparators over this same set, not gate conditions.
         base_passing = []
@@ -110,7 +127,7 @@ def main(db: str, dataset: str, limit: int) -> None:
                 if not _passes(base_setup, base_tests, base_prelude, m):
                     continue  # caught by weak public; not an overfit candidate
                 base_passing.append(m)
-                if not _passes(setup or "", plus_tests, prelude or "", m, per_timeout=plus_timeout):
+                if not _passes(setup or "", plus_tests, plus_prelude, m, per_timeout=plus_timeout):
                     plus_caught += 1  # plus (strong private) catches it
             except Exception:
                 continue
