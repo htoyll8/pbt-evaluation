@@ -160,13 +160,17 @@ def _score_units(program: Program, suite: Suite, task: Task) -> tuple[bool, floa
     """Score a unit or private suite via the isolated grading worker.
 
     The suite blob is self-describing JSON ({"io_mode": ..., "tests": [...]}); its
-    tests list is fed verbatim to make_scorer alongside the task's execution
-    context.
+    tests list is fed verbatim to make_scorer. Execution context comes from the task
+    unless the blob overrides it: a task's weak and private suites can need different
+    contexts (MBPP+'s plus harness needs its preamble bound as a prelude, HumanEval's
+    needs a longer timeout because it runs whole), and context lives on the task row.
+    A blob without these keys behaves exactly as before.
 
     Args:
         program: The candidate program (only its `code` is run).
-        suite: The unit or private suite whose JSON blob holds the test cases.
-        task: The task carrying setup, prelude, and per_timeout for the worker.
+        suite: The unit or private suite whose JSON blob holds the test cases, and
+            optionally its own prelude / per_timeout.
+        task: The task carrying the default setup, prelude, and per_timeout.
 
     Returns:
         A (passed, pass_fraction) pair, where passed means every case passed.
@@ -176,8 +180,8 @@ def _score_units(program: Program, suite: Suite, task: Task) -> tuple[bool, floa
     scorer: Callable[[str], float] = make_scorer(
         setup=task.setup,
         tests=blob["tests"],
-        prelude=task.prelude,
-        per_timeout=task.per_timeout,
+        prelude=blob.get("prelude", task.prelude),
+        per_timeout=blob.get("per_timeout", task.per_timeout),
         io_mode=io_mode,
     )
     fraction = scorer(program.code)

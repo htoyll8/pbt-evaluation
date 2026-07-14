@@ -37,6 +37,7 @@ def run_pipeline(
     variant: str = "ref",
     prog_client=None,
     suite_client=None,
+    difficulties: tuple[str, ...] | None = None,
 ) -> dict:
     """Run the full pipeline for one cross-model cell and return the metrics.
 
@@ -50,12 +51,14 @@ def run_pipeline(
         variant: PBT prompt variant (ref, noref, nohints, noref_nohints).
         prog_client: Optional stub program model; a real client is built when None.
         suite_client: Optional stub suite model; a real client is built when None.
+        difficulties: Optional difficulty tiers to keep (only supported by "apps",
+            e.g. ("introductory",) or ("competition",)); None loads the dataset as-is.
 
     Returns:
         The overall overfit-catch metrics dict, with a "matrix" key holding the
         per (prog_model, suite_model) breakdown.
     """
-    n_seeded = seed_dataset(conn, dataset, n_tasks)
+    n_seeded = seed_dataset(conn, dataset, n_tasks, difficulties=difficulties)
     print(f"[run] seeded {n_seeded} task(s) from {dataset}")
 
     n_progs = generate_programs(conn, dataset, prog_model, n_samples=n_samples, model=prog_client)
@@ -89,6 +92,9 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--n-samples", type=int, default=1, help="programs sampled per task")
     ap.add_argument("--variant", default="ref",
                     choices=("ref", "noref", "nohints", "noref_nohints"))
+    ap.add_argument("--difficulty", default=None,
+                    choices=("introductory", "interview", "competition"),
+                    help="apps only: keep just this difficulty tier (e.g. introductory)")
     ap.add_argument("--db", default=db.DEFAULT_PATH, help="path to the SQLite store")
     return ap.parse_args()
 
@@ -98,9 +104,11 @@ def main() -> None:
     args = parse_args()
     conn = db.connect(args.db)
     try:
+        difficulties = (args.difficulty,) if args.difficulty else None
         metrics = run_pipeline(
             conn, args.dataset, args.prog_model, args.suite_model,
             n_tasks=args.n_tasks, n_samples=args.n_samples, variant=args.variant,
+            difficulties=difficulties,
         )
     finally:
         conn.close()

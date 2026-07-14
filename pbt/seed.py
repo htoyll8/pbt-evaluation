@@ -31,18 +31,29 @@ from pbt.core import Suite, Task
 BENCHMARK_MODEL = "benchmark"  # sentinel suite_model for the dataset's own unit tests
 
 
-def _serialize_tests(io_mode: str, tests: list) -> str:
+def _serialize_tests(io_mode: str, tests: list, prelude: str | None = None,
+                     per_timeout: int | None = None) -> str:
     """Serialize a grading task's test units into a self-describing suite blob.
 
     Args:
         io_mode: "function" (assert strings) or "stdio" ([input, expected] pairs).
         tests: The grading `Task.tests` list, already worker-consumable.
+        prelude: Suite-specific prelude overriding the task's, or None to inherit it.
+        per_timeout: Suite-specific per-unit timeout overriding the task's, or None to
+            inherit it.
 
     Returns:
         A compact JSON object {"io_mode": ..., "tests": [...]} usable directly
-        by a scorer.
+        by a scorer, carrying "prelude"/"per_timeout" only when the suite needs a
+        context different from its task's. Omitting them keeps the blob (and therefore
+        the suite's content-hash id) byte-identical to the pre-private-suite format.
     """
-    return json.dumps({"io_mode": io_mode, "tests": tests}, sort_keys=True)
+    blob: dict = {"io_mode": io_mode, "tests": tests}
+    if prelude is not None:
+        blob["prelude"] = prelude
+    if per_timeout is not None:
+        blob["per_timeout"] = per_timeout
+    return json.dumps(blob, sort_keys=True)
 
 
 def _insert_task(conn: sqlite3.Connection, task: Task) -> None:
@@ -77,7 +88,8 @@ def _insert_suite(conn: sqlite3.Connection, suite: Suite) -> None:
     )
 
 
-def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10) -> int:
+def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10,
+                 difficulties: tuple[str, ...] | None = None) -> int:
     """Seed `tasks` and benchmark unit `suites` for a registered dataset.
 
     Loads up to `n_tasks` problems through the existing grading loaders, maps each
@@ -89,6 +101,8 @@ def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10) -> i
         conn: Open read-write connection to the store.
         dataset: Name of a registered grading dataset (e.g. "mbppplus", "humaneval", "apps").
         n_tasks: Maximum number of tasks to load from the dataset.
+        difficulties: Optional difficulty tiers to keep (only supported by "apps",
+            e.g. ("introductory",) or ("competition",)); None loads the dataset as-is.
 
     Returns:
         The number of tasks processed from the loader (the count requested and
@@ -97,7 +111,7 @@ def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10) -> i
     Raises:
         ValueError: If `dataset` is not a registered grading dataset.
     """
-    grading_tasks = load_tasks(dataset, n_tasks)
+    grading_tasks = load_tasks(dataset, n_tasks, difficulties=difficulties)
     for gt in grading_tasks:
         task = Task(
             task_id=gt.task_id,
@@ -111,13 +125,21 @@ def seed_dataset(conn: sqlite3.Connection, dataset: str, n_tasks: int = 10) -> i
             io_mode=gt.io_mode,
             difficulty=gt.difficulty,
         )
-        suite = Suite(
+        _insert_task(conn, task)
+        _insert_suite(conn, Suite(
             task_id=task.task_id,
             suite_model=BENCHMARK_MODEL,
             kind="unit",
             code=_serialize_tests(gt.io_mode, gt.tests),
-        )
-        _insert_task(conn, task)
-        _insert_suite(conn, suite)
+        ))
+        if gt.private_tests:
+            _insert_suite(conn, Suite(
+                task_id=task.task_id,
+                suite_model=BENCHMARK_MODEL,
+                kind="private",
+                code=_serialize_tests(gt.io_mode, gt.private_tests,
+                                      prelude=gt.private_prelude,
+                                      per_timeout=gt.private_timeout),
+            ))
     conn.commit()
     return len(grading_tasks)

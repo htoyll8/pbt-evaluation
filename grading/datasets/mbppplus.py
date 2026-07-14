@@ -106,15 +106,23 @@ def _split_harness(test_src: str) -> tuple[str, list[str]] | None:
 
 
 def load(n_tasks: int) -> list[Task]:
-    """Load MBPP+ tasks scored against the full EvalPlus `test` harness.
+    """Load MBPP+ tasks, with the ORIGINAL suite as `tests` and the plus harness as private.
 
-    `test` is the augmented "plus" suite (the point of MBPP+), not the 3-assert base MBPP
-    `test_list`. Where the harness matches the standard EvalPlus loop it is split into one
-    test per case (partial credit); the few non-standard harnesses fall back to running the
-    whole harness as a single all-or-nothing unit with a longer timeout.
+    `test_list` is the 3-assert base MBPP suite: weak, and the benchmark's original oracle.
+    It becomes `tests`, so eligibility gates on it. `test` is the EvalPlus-augmented "plus"
+    harness: strong, and the incumbent this study measures against. It becomes
+    `private_tests`, scored separately as a kind="private" suite.
 
-    The harness preamble is run as `prelude` (after the candidate) so its `inputs`/`results`/
-    `assertion` always win over any same-named variables the candidate happens to define.
+    Keeping the plus harness OUT of `tests` is the point. Gating eligibility on it would
+    drop every program that passes the 3 base asserts but fails the augmented harness, which
+    is exactly the overfit population the study is about.
+
+    Where the plus harness matches the standard EvalPlus loop it is split into one test per
+    case (partial credit); the few non-standard harnesses fall back to running the whole
+    harness as one all-or-nothing unit with a longer timeout. The harness preamble is run as
+    the private suite's prelude (after the candidate) so its `inputs`/`results`/`assertion`
+    always win over any same-named variables the candidate happens to define. The base
+    asserts call the function by name and need no prelude.
     """
     tasks = []
     for ex in take(SOURCE, n_tasks):
@@ -126,12 +134,14 @@ def load(n_tasks: int) -> list[Task]:
         reference_solution = ex["code"]
         split = _split_harness(ex["test"])
         if split is not None:
-            preamble, tests = split
-            tasks.append(Task(task_id=str(ex["task_id"]), description=desc,
-                              setup=setup, tests=tests, prelude=preamble,
-                              entry_point=entry_point, reference_solution=reference_solution))
+            preamble, plus_tests = split
+            private_prelude, private_timeout = preamble, None
         else:
-            tasks.append(Task(task_id=str(ex["task_id"]), description=desc,
-                              setup=setup, tests=[ex["test"]], per_timeout=PLUS_TIMEOUT,
-                              entry_point=entry_point, reference_solution=reference_solution))
+            plus_tests = [ex["test"]]
+            private_prelude, private_timeout = "", PLUS_TIMEOUT
+        tasks.append(Task(task_id=str(ex["task_id"]), description=desc,
+                          setup=setup, tests=list(ex["test_list"]), prelude="",
+                          entry_point=entry_point, reference_solution=reference_solution,
+                          private_tests=plus_tests, private_prelude=private_prelude,
+                          private_timeout=private_timeout))
     return tasks

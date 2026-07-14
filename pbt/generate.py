@@ -81,7 +81,9 @@ def _ensure_model(model, model_name: str):
     """
     if model is not None:
         return model
-    return model_module.Model(model_name=model_name)
+    # temperature=None -> don't send a temperature, so each model uses its own
+    # provider default (OpenAI/Anthropic ~1.0) rather than this repo's forced 0.
+    return model_module.Model(model_name=model_name, temperature=None)
 
 
 def _load_tasks(conn: sqlite3.Connection, dataset: str) -> list[Task]:
